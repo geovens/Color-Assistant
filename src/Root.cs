@@ -173,7 +173,7 @@ namespace gInk
 			Hotkey_Alt = true;
 			Hotkey_Shift = false;
 			Hotkey_Win = false;
-			Hotkey = 'G';
+			Hotkey = 'C';
 
 			WhiteTrayIcon = false;
 		}

@@ -139,46 +139,7 @@
     <None Include="exit.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="garbage.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="undo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="eraser.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="eraseract.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="eraserinact.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="check.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursorblue.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursorred.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursoryellow.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursorgreen.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="highlighter1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="pencil1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="highlighter_act.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="pencil_act.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="buttonback.png" />
@@ -187,12 +148,9 @@
     <None Include="Resources\icon.ico" />
     <None Include="pointer_act.png" />
     <None Include="pointer.png" />
-    <None Include="snap.png" />
     <None Include="dock.png" />
     <None Include="dockback.png" />
     <Content Include="icon.ico" />
-    <Content Include="icon_red.ico" />
-    <None Include="icon_white.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
