@@ -29,7 +29,7 @@ namespace gInk
 		SolidBrush SemiTransparentBrush;
 
 		byte[] screenbits;
-		byte[] lastscreenbits;
+		byte[] drawscreenbits;
 
 		public FormDisplay(Root root)
 		{
@@ -64,14 +64,14 @@ namespace gInk
 			gCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 			gOneStrokeCanvus = Graphics.FromHdc(onestrokeDc);
 			gOneStrokeCanvus.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-			if (Root.AutoScroll)
-			{
-				hScreenBitmap = InitCanvus.GetHbitmap(Color.FromArgb(0));
-				memscreenDc = CreateCompatibleDC(screenDc);
-				SelectObject(memscreenDc, hScreenBitmap);
-				screenbits = new byte[50000000];
-				lastscreenbits = new byte[50000000];
-			}
+
+			// for color pick
+			hScreenBitmap = InitCanvus.GetHbitmap(Color.FromArgb(0));
+			memscreenDc = CreateCompatibleDC(screenDc);
+			SelectObject(memscreenDc, hScreenBitmap);
+			screenbits = new byte[50000000];
+			drawscreenbits = new byte[50000000];
+
 			ReleaseDC(IntPtr.Zero, screenDc);
 			InitCanvus.Dispose();
 
@@ -164,107 +164,41 @@ namespace gInk
 		}
 
 
-		public uint N1(int i, int j)
+		public byte GC(int i, int j, int c)
 		{
-			//return BitConverter.ToUInt32(screenbits, (this.Width * j + i) * 4);
-			Nlastp1 = (this.Width * j + i) * 4 + 1;
-			return screenbits[Nlastp1];
+			return screenbits[(this.Width * j + i) * 4 + c];
 		}
-		public uint N2(int i, int j)
+		public void SC(int i, int j, int c, byte v)
 		{
-			//return BitConverter.ToUInt32(screenbits, (this.Width * j + i) * 4);
-			Nlastp2 = (this.Width * j + i) * 4 + 1;
-			return screenbits[Nlastp2];
-		}
-		public uint L(int i, int j)
-		{
-			//return BitConverter.ToUInt32(lastscreenbits, (this.Width * j + i) * 4);
-			Llastp = (this.Width * j + i) * 4 + 1;
-			return lastscreenbits[Llastp];
-		}
-		int Nlastp1, Nlastp2, Llastp;
-		public uint Nnext1()
-		{
-			Nlastp1 += 40;
-			return screenbits[Nlastp1];
-		}
-		public uint Nnext2()
-		{
-			Nlastp2 += 40;
-			return screenbits[Nlastp2];
-		}
-		public uint Lnext()
-		{
-			Llastp += 40;
-			return lastscreenbits[Llastp];
+			screenbits[(this.Width * j + i) * 4 + c] = v;
 		}
 
-		public int Test()
+		public void PickColor(int x, int y)
 		{		
 			IntPtr screenDc = GetDC(IntPtr.Zero);
 
-			// big time consuming, but not CPU consuming
-			BitBlt(memscreenDc, Width / 4, 0, Width / 2, this.Height, screenDc, Width / 4, 0, 0x00CC0020);
-			// <1% CPU
+			BitBlt(memscreenDc, 0, 0, this.Width, this.Height, screenDc, 0, 0, 0x00CC0020);
 			GetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
-			
-			int dj;
-			int maxidpixels = 0;
-			float maxidchdrio = 0;
-			int maxdj = 0;
-			
-			
-			// 25% CPU with 1x10x10 sample rate?
-			int istart = Width / 2 - Width / 4;
-			int iend = Width / 2 + Width / 4;
-			for (dj = -Height * 3 / 8 + 1; dj < Height * 3 / 8 - 1; dj++)
+
+		
+			for (int i = 0; i < Width; i++)
 			{
-				int chdpixels = 0, idpixels = 0;
-				for (int j = Height / 2 - Height / 8; j < Height / 2 + Height / 8; j += 10)
+				for (int j = 0; j < Height; j++)
 				{
-					L(istart - 10, j);
-					N1(istart - 10, j);
-					N2(istart - 10, j + dj);
-					for (int i = istart; i < iend; i += 10)
-					{
-						//uint l = Lnext();
-						//uint n1 = Nnext1();
-						//uint n2 = Nnext2();
-						//if (l != n1)
-						//{
-						//	chdpixels++;
-						//	if (l == n2)
-						//		idpixels++;
-						//}
-						
-
-						if (Lnext() == Nnext2())
-							idpixels++;
-					}
-				}
-
-				//float idchdrio = (float)idpixels / chdpixels;
-				if (idpixels > maxidpixels)
-				//if (idchdrio > maxidchdrio)
-				{
-					//maxidchdrio = idchdrio;
-					maxidpixels = idpixels;
-					maxdj = dj;
+					byte b = GC(i, j, 0);
+					byte g = GC(i, j, 1);
+					byte r = GC(i, j, 2);
+					if (b == 0 && g == 0 && r == 0)
+						SC(i, j, 0, 255);
 				}
 			}
-
-			//if (maxidchdrio < 0.1 || maxidpixels < 30)
-			if (maxidpixels < 100)
-				maxdj = 0;
 			
 
-			// 2% CPU
-			IntPtr pscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(screenbits, (int)(this.Width * this.Height * 4 * 0.375));
-			IntPtr plastscreenbits = Marshal.UnsafeAddrOfPinnedArrayElement(lastscreenbits, (int)(this.Width * this.Height * 4 * 0.375));
-			memcpy(plastscreenbits, pscreenbits, this.Width * this.Height * 4 / 4);
+			SetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
+			BitBlt(canvusDc, 0, 0, this.Width, this.Height, memscreenDc, 0, 0, 0x00CC0020);
+			UpdateFormDisplay(true);
 
 			ReleaseDC(IntPtr.Zero, screenDc);
-			return maxdj;
 		}
 
 		public void UpdateFormDisplay(bool draw)
@@ -311,26 +245,8 @@ namespace gInk
 
 			// temp
 			//DrawButtons(false);
-			UpdateFormDisplay(true);
+			//UpdateFormDisplay(true);
 
-			
-			/*
-			if (Root.AutoScroll && Root.PointerMode)
-			{
-				int moved = Test();
-				stackmove += moved;
-
-				if (stackmove != 0 && Tick % 10 == 1)
-				{
-					MoveStrokes(stackmove);
-					ClearCanvus();
-					DrawStrokes();
-					DrawButtons(false);
-					UpdateFormDisplay(true);
-					stackmove = 0;
-				}
-			}
-			*/
 		}
 
 		private void FormDisplay_FormClosed(object sender, FormClosedEventArgs e)
@@ -338,11 +254,9 @@ namespace gInk
 			DeleteObject(Canvus);
 			//DeleteObject(BlankCanvus);
 			DeleteDC(canvusDc);
-			if (Root.AutoScroll)
-			{
-				DeleteObject(hScreenBitmap);
-				DeleteDC(memscreenDc);
-			}
+
+			DeleteObject(hScreenBitmap);
+			DeleteDC(memscreenDc);
 		}
 
 		[DllImport("user32.dll")]
@@ -399,6 +313,8 @@ namespace gInk
 
 		[DllImport("gdi32.dll")]
 		static extern int GetBitmapBits(IntPtr hbmp, int cbBuffer, [Out] byte[] lpvBits);
+		[DllImport("gdi32.dll")]
+		static extern int SetBitmapBits(IntPtr hbmp, int cbBuffer, [Out] byte[] lpvBits);
 		[DllImport("gdi32.dll")]
 		static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
 

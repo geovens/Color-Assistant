@@ -42,10 +42,10 @@ namespace gInk
 		// options
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey;
-		public bool AutoScroll;
 		public bool WhiteTrayIcon;
 
 		public bool Docked = false;
+		public bool InPick = false;
 
 		public int UponButtonsUpdate = 0;
         public bool UponBalloonSnap = false;
@@ -157,6 +157,19 @@ namespace gInk
 			UponButtonsUpdate |= 0x2;
 		}
 
+		public void Pick(int x, int y)
+		{
+			InPick = true;
+			FormDisplay.PickColor(x, y);
+		}
+
+		public void UnPick()
+		{
+			InPick = false;
+			FormDisplay.ClearCanvus();
+			FormDisplay.UpdateFormDisplay(true);
+		}
+
 		public void SetDefaultConfig()
 		{
 			Hotkey_Control = true;
@@ -165,7 +178,6 @@ namespace gInk
 			Hotkey_Win = false;
 			Hotkey = 'G';
 
-			AutoScroll = false;
 			WhiteTrayIcon = false;
 		}
 
@@ -227,13 +239,6 @@ namespace gInk
 								Hotkey_Win = false;
 							if (sPara.Length > 0)
 								Hotkey = sPara.Substring(sPara.Length - 1).ToCharArray()[0];
-							break;
-						case "ENABLEAUTOSCROLL":
-							sPara = sPara.ToUpper();
-							if (sPara.Contains("TRUE"))
-								AutoScroll = true;
-							else
-								AutoScroll = false;
 							break;
 						case "WHITETRAYICON":
 							sPara = sPara.ToUpper();

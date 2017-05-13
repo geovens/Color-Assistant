@@ -118,6 +118,7 @@
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormCollection_MouseDown);
+			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.FormCollection_MouseUp);
 			this.gpButtons.ResumeLayout(false);
 			this.ResumeLayout(false);
 

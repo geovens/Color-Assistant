@@ -131,9 +131,12 @@ namespace gInk
 
 		private void FormCollection_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			Console.WriteLine("(" + e.X.ToString() + ", " + e.Y.ToString() + ")");
+			Root.Pick(e.X, e.Y);
+		}
 
-			Root.FormDisplay.DrawTest(e.X, e.Y);
+		private void FormCollection_MouseUp(object sender, MouseEventArgs e)
+		{
+			Root.UnPick();
 		}
 
 		public void btDock_Click(object sender, EventArgs e)
@@ -247,6 +250,7 @@ namespace gInk
 		static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
 		[DllImport("user32.dll")]
 		static extern int SetWindowLong(IntPtr hWnd, int nIndex, UInt32 dwNewLong);
+
 		[DllImport("user32.dll")]
 		public extern static bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 		[DllImport("user32.dll", SetLastError = false)]
