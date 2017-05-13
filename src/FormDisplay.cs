@@ -30,6 +30,7 @@ namespace gInk
 
 		byte[] screenbits;
 		byte[] drawscreenbits;
+		List<Point> MatchPixelList;
 
 		public FormDisplay(Root root)
 		{
@@ -71,6 +72,7 @@ namespace gInk
 			SelectObject(memscreenDc, hScreenBitmap);
 			screenbits = new byte[50000000];
 			drawscreenbits = new byte[50000000];
+			MatchPixelList = new List<Point>();
 
 			ReleaseDC(IntPtr.Zero, screenDc);
 			InitCanvus.Dispose();
@@ -168,9 +170,12 @@ namespace gInk
 		{
 			return screenbits[(this.Width * j + i) * 4 + c];
 		}
-		public void SC(int i, int j, int c, byte v)
+		public void SC(int i, int j, byte v)
 		{
-			screenbits[(this.Width * j + i) * 4 + c] = v;
+			screenbits[(this.Width * j + i) * 4 + 0] = v;
+			screenbits[(this.Width * j + i) * 4 + 1] = v;
+			screenbits[(this.Width * j + i) * 4 + 2] = v;
+			screenbits[(this.Width * j + i) * 4 + 3] = 50;
 		}
 
 		public void PickColor(int x, int y)
@@ -180,23 +185,23 @@ namespace gInk
 			BitBlt(memscreenDc, 0, 0, this.Width, this.Height, screenDc, 0, 0, 0x00CC0020);
 			GetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
 
-		
+			int targetb = GC(x, y, 0);
+			int targetg = GC(x, y, 1);
+			int targetr = GC(x, y, 2);
+			MatchPixelList.Clear();
 			for (int i = 0; i < Width; i++)
 			{
 				for (int j = 0; j < Height; j++)
 				{
-					byte b = GC(i, j, 0);
-					byte g = GC(i, j, 1);
-					byte r = GC(i, j, 2);
-					if (b == 0 && g == 0 && r == 0)
-						SC(i, j, 0, 255);
+					int b = GC(i, j, 0);
+					int g = GC(i, j, 1);
+					int r = GC(i, j, 2);
+					if (Math.Abs(b - targetb) < 9 && Math.Abs(g - targetg) < 9 && Math.Abs(r - targetr) < 9)
+					{
+						MatchPixelList.Add(new Point(i, j));
+					}
 				}
 			}
-			
-
-			SetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
-			BitBlt(canvusDc, 0, 0, this.Width, this.Height, memscreenDc, 0, 0, 0x00CC0020);
-			UpdateFormDisplay(true);
 
 			ReleaseDC(IntPtr.Zero, screenDc);
 		}
@@ -226,12 +231,16 @@ namespace gInk
 			ReleaseDC(IntPtr.Zero, screenDc);	
 		}
 
-		int stackmove = 0;
-		int Tick = 0;
-		DateTime TickStartTime;
+		int MaskColor = 0;
+		int MaskColorInterval = 10;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			Tick++;
+			MaskColor += MaskColorInterval;
+			if (MaskColor < 0 || MaskColor > 255)
+			{
+				MaskColorInterval = -MaskColorInterval;
+				MaskColor += 2 * MaskColorInterval;
+			}
 
 			if (Root.UponButtonsUpdate > 0)
 			{
@@ -243,10 +252,21 @@ namespace gInk
 				Root.UponButtonsUpdate = 0;
 			}
 
-			// temp
-			//DrawButtons(false);
-			//UpdateFormDisplay(true);
+			if (Root.InPick)
+			{
+				foreach (Point point in MatchPixelList)
+				{
+					SC(point.X, point.Y, (byte)(MaskColor));
+				}
 
+				IntPtr screenDc = GetDC(IntPtr.Zero);
+				SetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
+				BitBlt(canvusDc, 0, 0, this.Width, this.Height, memscreenDc, 0, 0, 0x00CC0020);
+				ReleaseDC(IntPtr.Zero, screenDc);
+
+				DrawButtons(false);
+				UpdateFormDisplay(true);
+			}
 		}
 
 		private void FormDisplay_FormClosed(object sender, FormClosedEventArgs e)

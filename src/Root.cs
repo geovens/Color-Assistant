@@ -167,6 +167,7 @@ namespace gInk
 		{
 			InPick = false;
 			FormDisplay.ClearCanvus();
+			FormDisplay.DrawButtons(false);
 			FormDisplay.UpdateFormDisplay(true);
 		}
 
