@@ -5,8 +5,7 @@ Color Assistant is a tiny software that flashes the clicked color on the screen,
 
 #### Screen Shots
 
-![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot1.jpg)  
-![screenshot](https://raw.githubusercontent.com/geovens/gInk/master/screenshot2.jpg)  
+![screenshot](https://raw.githubusercontent.com/geovens/Color-Assistant/master/demo.gif)  
 
 #### How to use
 

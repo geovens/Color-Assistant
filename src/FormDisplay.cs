@@ -191,18 +191,18 @@ namespace gInk
 			StretchBlt(memscreenDc, 0, 0, Width, Height, screenDc, 0, 0, bitbltwidth, bitbltheight, 0x00CC0020);
 			GetBitmapBits(hScreenBitmap, Width * Height * 4, screenbits);
 
-			int targetb = GC(x, y, 0);
-			int targetg = GC(x, y, 1);
-			int targetr = GC(x, y, 2);
+			int targetb = GC(x, y, 0) + 1;
+			int targetg = GC(x, y, 1) + 1;
+			int targetr = GC(x, y, 2) + 1;
 			MatchPixelList.Clear();
 			for (int i = 0; i < Width; i++)
 			{
 				for (int j = 0; j < Height; j++)
 				{
-					int b = GC(i, j, 0);
-					int g = GC(i, j, 1);
-					int r = GC(i, j, 2);
-					if (Math.Abs(b - targetb) < 25 && Math.Abs(g - targetg) < 25 && Math.Abs(r - targetr) < 25)
+					int b = GC(i, j, 0) + 1;
+					int g = GC(i, j, 1) + 1;
+					int r = GC(i, j, 2) + 1;
+					if (Math.Abs(b - targetb) + Math.Abs(g - targetg) + Math.Abs(r - targetr) < 50)
 					{
 						MatchPixelList.Add(new Point(i, j));
 					}
