@@ -157,27 +157,6 @@ namespace gInk
 			gCanvus.DrawLine(bp, new Point(x, y), new Point(x + 100, y + 100));
 		}
 
-		public void DrawStrokes()
-		{
-			Root.FormCollection.IC.Renderer.Draw(gCanvus, Root.FormCollection.IC.Ink.Strokes);
-		}
-		public void DrawStrokes(Graphics g)
-		{
-			Root.FormCollection.IC.Renderer.Draw(g, Root.FormCollection.IC.Ink.Strokes);
-		}
-
-		public void MoveStrokes(int dy)
-		{
-			Point pt1 = new Point(0, 0);
-			Point pt2 = new Point(0, 100);
-			Root.FormCollection.IC.Renderer.PixelToInkSpace(gCanvus, ref pt1);
-			Root.FormCollection.IC.Renderer.PixelToInkSpace(gCanvus, ref pt2);
-			float unitperpixel = (pt2.Y - pt1.Y) / 100.0f;
-			float shouldmove = dy * unitperpixel;
-			foreach (Stroke stroke in Root.FormCollection.IC.Ink.Strokes)
-				if (!stroke.Deleted)
-					stroke.Move(0, shouldmove);
-		}
 		
 		protected override void OnPaint(PaintEventArgs e)
 		{
@@ -363,23 +342,11 @@ namespace gInk
 		{
 			Tick++;
 
+			DrawButtons(false);
 			UpdateFormDisplay(true);
 
-			/*
-			if (Tick == 1)
-				TickStartTime = DateTime.Now;
-			else if (Tick % 60 == 0)
-			{
-				Console.WriteLine(60 / (DateTime.Now - TickStartTime).TotalMilliseconds * 1000);
-				TickStartTime = DateTime.Now;
-			}
-			*/
-
-
-
-
 			
-
+			/*
 			if (Root.AutoScroll && Root.PointerMode)
 			{
 				int moved = Test();
@@ -395,6 +362,7 @@ namespace gInk
 					stackmove = 0;
 				}
 			}
+			*/
 		}
 
 		private void FormDisplay_FormClosed(object sender, FormClosedEventArgs e)

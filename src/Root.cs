@@ -146,17 +146,9 @@ namespace gInk
 			FormButtonHitter = new FormButtonHitter(this);
 			if (CurrentPen <= 0)
 				CurrentPen = 1;
-			SelectPen(CurrentPen);
 			FormDisplay.Show();
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
-
-			UndoStrokes = new Ink[8];
-			UndoStrokes[0] = FormCollection.IC.Ink.Clone();
-			UndoDepth = 0;
-			UndoP = 0;
-
-			//UponUndoStrokes = FormCollection.IC.Ink.Clone();
 		}
 		public void StopInk()
 		{
@@ -168,66 +160,6 @@ namespace gInk
 			GC.Collect();
 			FormCollection = null;
 			FormDisplay = null;
-
-            if (UponBalloonSnap)
-            {
-                ShowBalloonSnapshot();
-                UponBalloonSnap = false;
-            }
-		}
-
-		public void ClearInk()
-		{
-			FormCollection.IC.Ink.DeleteStrokes();
-			FormDisplay.ClearCanvus();
-			FormDisplay.DrawButtons(true);
-			FormDisplay.UpdateFormDisplay(true);
-		}
-
-        public void ShowBalloonSnapshot()
-        {
-            Console.WriteLine(SnapshotBasePath);
-            trayIcon.ShowBalloonTip(3000);
-        }
-
-		public void UndoInk()
-		{
-			if (UndoDepth <= 0)
-				return;
-
-			UndoP--;
-			if (UndoP < 0)
-				UndoP = UndoStrokes.GetLength(0) - 1;
-			UndoDepth--;
-			RedoDepth++;
-			FormCollection.IC.Ink.DeleteStrokes();
-			if (UndoStrokes[UndoP].Strokes.Count > 0)
-				FormCollection.IC.Ink.AddStrokesAtRectangle(UndoStrokes[UndoP].Strokes, UndoStrokes[UndoP].Strokes.GetBoundingBox());
-			
-			FormDisplay.ClearCanvus();
-			FormDisplay.DrawStrokes();
-			FormDisplay.DrawButtons(true);
-			FormDisplay.UpdateFormDisplay(true);
-		}
-
-		public void RedoInk()
-		{
-			if (RedoDepth <= 0)
-				return;
-
-			UndoDepth++;
-			RedoDepth--;
-			UndoP++;
-			if (UndoP >= UndoStrokes.GetLength(0))
-				UndoP = 0;
-			FormCollection.IC.Ink.DeleteStrokes();
-			if (UndoStrokes[UndoP].Strokes.Count > 0)
-				FormCollection.IC.Ink.AddStrokesAtRectangle(UndoStrokes[UndoP].Strokes, UndoStrokes[UndoP].Strokes.GetBoundingBox());
-
-			FormDisplay.ClearCanvus();
-			FormDisplay.DrawStrokes();
-			FormDisplay.DrawButtons(true);
-			FormDisplay.UpdateFormDisplay(true);
 		}
 
 		public void Dock()
@@ -248,34 +180,6 @@ namespace gInk
 			Docked = false;
 			FormCollection.btDock.Image = FormCollection.image_dock;
 			UponButtonsUpdate |= 0x2;
-		}
-
-		public void Pointer()
-		{
-			if (PointerMode == true)
-				return;
-
-			PointerMode = true;
-			FormCollection.ToThrough();
-			FormButtonHitter.Show();
-		}
-
-		public void UnPointer()
-		{
-			if (PointerMode == false)
-				return;
-
-			PointerMode = false;
-			FormCollection.ToUnThrough();
-			FormCollection.ToTopMost();
-			FormCollection.Cursor = FormCollection.cursorred;
-			FormCollection.IC.Cursor = FormCollection.cursorred;
-			FormButtonHitter.Hide();
-		}
-
-		public void SelectPen(int pen)
-		{
-			FormCollection.SelectPen(pen);
 		}
 
 		public void SetDefaultPens()

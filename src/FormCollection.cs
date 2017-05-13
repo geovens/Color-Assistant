@@ -14,7 +14,6 @@ namespace gInk
 	public partial class FormCollection : Form
 	{
 		public Root Root;
-		public InkOverlay IC;
 
 		public Bitmap image_exit, image_clear, image_undo, image_snap;
 		public Bitmap image_dock, image_dockback;
@@ -51,27 +50,6 @@ namespace gInk
 			gpButtons.Left = gpButtonsLeft + gpButtons.Width;
 			gpButtons.Top = gpButtonsTop;
 
-			IC = new InkOverlay(this.Handle);
-			IC.CollectionMode = CollectionMode.InkOnly;
-			IC.AutoRedraw = false;
-			IC.DynamicRendering = false;
-			IC.EraserMode = InkOverlayEraserMode.StrokeErase;
-			IC.CursorInRange += IC_CursorInRange;
-			IC.MouseDown += IC_MouseDown;
-			IC.MouseMove += IC_MouseMove;
-			IC.MouseUp += IC_MouseUp;
-			IC.CursorDown += IC_CursorDown;
-			IC.Stroke += IC_Stroke;
-			IC.DefaultDrawingAttributes.Width = 80;
-			IC.DefaultDrawingAttributes.Transparency = 30;
-			IC.DefaultDrawingAttributes.AntiAliased = true;
-
-			cursorred = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorred.Handle);
-			//cursoryellow = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursoryellow.Handle);
-			//cursorblue = new System.Windows.Forms.Cursor(gInk.Properties.Resources.cursorblue.Handle);
-			IC.Cursor = cursorred;
-			this.Cursor = cursorred;
-			IC.Enabled = true;
 
 			image_exit = new Bitmap(btStop.Width, btStop.Height);
 			Graphics g = Graphics.FromImage(image_exit);
@@ -214,107 +192,6 @@ namespace gInk
 			ToTopMost();
 		}
 
-		private void IC_Stroke(object sender, InkCollectorStrokeEventArgs e)
-		{
-			SaveUndoStrokes();
-		}
-
-		private void SaveUndoStrokes()
-		{
-			Root.RedoDepth = 0;
-			if (Root.UndoDepth < Root.UndoStrokes.GetLength(0) - 1)
-				Root.UndoDepth++;
-
-			Root.UndoP++;
-			if (Root.UndoP >= Root.UndoStrokes.GetLength(0))
-				Root.UndoP = 0;
-
-			if (Root.UndoStrokes[Root.UndoP] == null)
-				Root.UndoStrokes[Root.UndoP] = new Ink();
-			Root.UndoStrokes[Root.UndoP].DeleteStrokes();
-			if (IC.Ink.Strokes.Count > 0)
-				Root.UndoStrokes[Root.UndoP].AddStrokesAtRectangle(IC.Ink.Strokes, IC.Ink.Strokes.GetBoundingBox());
-		}
-
-		private void IC_CursorDown(object sender, InkCollectorCursorDownEventArgs e)
-		{
-			Root.FormDisplay.ClearCanvus(Root.FormDisplay.gOneStrokeCanvus);
-			Root.FormDisplay.DrawStrokes(Root.FormDisplay.gOneStrokeCanvus);
-			Root.FormDisplay.DrawButtons(Root.FormDisplay.gOneStrokeCanvus, false);
-		}
-
-		private void IC_MouseDown(object sender, CancelMouseEventArgs e)
-		{
-			if (Root.Snapping == 1)
-			{
-				Root.SnappingX = e.X;
-				Root.SnappingY = e.Y;
-				Root.SnappingRect = new Rectangle(e.X, e.Y, 0, 0);
-				Root.Snapping = 2;
-			}
-		}
-
-		private void IC_MouseMove(object sender, CancelMouseEventArgs e)
-		{
-			if (Root.Snapping == 2)
-			{
-				int left = Math.Min(Root.SnappingX, e.X);
-				int top = Math.Min(Root.SnappingY, e.Y);
-				int width = Math.Abs(Root.SnappingX - e.X);
-				int height = Math.Abs(Root.SnappingY - e.Y);
-				Root.SnappingRect = new Rectangle(left, top, width, height);
-			}
-		}
-
-		private void IC_MouseUp(object sender, CancelMouseEventArgs e)
-		{
-			if (Root.Snapping == 2)
-			{
-				int left = Math.Min(Root.SnappingX, e.X);
-				int top = Math.Min(Root.SnappingY, e.Y);
-				int width = Math.Abs(Root.SnappingX - e.X);
-				int height = Math.Abs(Root.SnappingY - e.Y);
-				if (width < 5 || height < 5)
-				{
-					left = 0;
-					top = 0;
-					width = this.Width;
-					height = this.Height;
-				}
-				Root.SnappingRect = new Rectangle(left, top, width, height);
-				Root.UponTakingSnap = true;
-				ExitSnapping();
-			}
-		}
-
-		private void IC_CursorInRange(object sender, InkCollectorCursorInRangeEventArgs e)
-		{
-			if (e.Cursor.Inverted && Root.CurrentPen != 0)
-			{
-				EnterEraserMode(true);
-				/*
-				// temperary eraser icon light
-				if (btEraser.Image == image_eraser)
-				{
-					btEraser.Image = image_eraser_act;
-					Root.FormDisplay.DrawButtons(true);
-					Root.FormDisplay.UpdateFormDisplay();
-				}
-				*/
-			}
-			else if (!e.Cursor.Inverted && Root.CurrentPen != 0)
-			{
-				EnterEraserMode(false);
-				/*
-				if (btEraser.Image == image_eraser_act)
-				{
-					btEraser.Image = image_eraser;
-					Root.FormDisplay.DrawButtons(true);
-					Root.FormDisplay.UpdateFormDisplay();
-				}
-				*/
-			}
-		}
 
 		public void ToTransparent()
 		{
@@ -351,134 +228,10 @@ namespace gInk
 			//SetWindowPos(this.Handle, (IntPtr)(-1), 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0020);
 		}
 
-		public void EnterEraserMode(bool enter)
-		{
-			if (enter)
-			{
-				IC.EditingMode = InkOverlayEditingMode.Delete;
-				Root.EraserMode = true;
-			}
-			else
-			{
-				IC.EditingMode = InkOverlayEditingMode.Ink;
-				Root.EraserMode = false;
-			}
-		}
-
-		public void ExitSnapping()
-		{
-			IC.SetWindowInputRectangle(new Rectangle(0, 0, this.Width, this.Height));
-			Root.SnappingX = -1;
-			Root.SnappingY = -1;
-			Root.Snapping = -60;
-			Root.SelectPen(Root.CurrentPen);
-		}
-
-		public void SelectPen(int pen)
-		{
-			// -1 = pointer, 0 = erasor, >0 = pens
-			if (pen == -1)
-			{
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer_act;
-				EnterEraserMode(false);
-				Root.Pointer();
-			}
-			else if (pen == 0)
-			{
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser_act;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(true);
-				Root.UnPointer();
-			}
-			else if (pen == 1)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen1;
-
-				btPen1.Image = image_pen1_act;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 2)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen2;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2_act;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 3)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen3;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3_act;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 4)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen4;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4_act;
-				btPen5.Image = image_pen5;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			else if (pen == 5)
-			{
-				IC.DefaultDrawingAttributes = Root.Pen5;
-
-				btPen1.Image = image_pen1;
-				btPen2.Image = image_pen2;
-				btPen3.Image = image_pen3;
-				btPen4.Image = image_pen4;
-				btPen5.Image = image_pen5_act;
-				btEraser.Image = image_eraser;
-				btPointer.Image = image_pointer;
-				EnterEraserMode(false);
-				Root.UnPointer();
-			}
-			Root.CurrentPen = pen;
-			Root.UponButtonsUpdate |= 0x2;
-		}
 
 		public void RetreatAndExit()
 		{
 			ToThrough();
-			Root.ClearInk();
 			LastTickTime = DateTime.Now;
 			ButtonsEntering = -1;
 		}
@@ -509,20 +262,12 @@ namespace gInk
 
 		public void btPointer_Click(object sender, EventArgs e)
 		{
-			SelectPen(-1);
+
 		}
 
 		public void btSnap_Click(object sender, EventArgs e)
 		{
-			if (Root.Snapping > 0)
-				return;
 
-			IC.SetWindowInputRectangle(new Rectangle(0, 0, 1, 1));
-			Root.SnappingX = -1;
-			Root.SnappingY = -1;
-			Root.SnappingRect = new Rectangle(0, 0, 0, 0);
-			Root.Snapping = 1;
-			Root.UnPointer();
 		}
 
 		public void btStop_Click(object sender, EventArgs e)
@@ -612,85 +357,29 @@ namespace gInk
 			short retVal = GetKeyState(27);
 			if ((retVal & 0x8000) == 0x8000)
 			{
-				if (Root.Snapping > 0)
-				{
-					ExitSnapping();
-				}
-				else if (Root.Snapping == 0)
-					RetreatAndExit();
+				RetreatAndExit();
 			}
 
-			const int VK_LCONTROL = 0xA2;
-			const int VK_RCONTROL = 0xA3;
-			retVal = GetKeyState('Z');
-			if ((retVal & 0x8000) == 0x8000)
-			{
-				if ((LastZStatus & 0x8000) == 0x0000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						Root.UndoInk();
-					}
-				}
-			}
-			LastZStatus = retVal;
-			retVal = GetKeyState('Y');
-			if ((retVal & 0x8000) == 0x8000)
-			{
-				if ((LastYStatus & 0x8000) == 0x0000)
-				{
-					short control = (short)(GetKeyState(VK_LCONTROL) | GetKeyState(VK_RCONTROL));
-					if ((control & 0x8000) == 0x8000)
-					{
-						Root.RedoInk();
-					}
-				}
-			}
-			LastYStatus = retVal;
-			
-			if (Root.Snapping < 0)
-				Root.Snapping++;
 		}
 
 		public void btClear_Click(object sender, EventArgs e)
 		{
-			Root.ClearInk();
-			SaveUndoStrokes();
+
 		}
 
 		private void btUndo_Click(object sender, EventArgs e)
 		{
-			Root.UndoInk();
+
 		}
 
 		public void btColor_Click(object sender, EventArgs e)
 		{
-			if ((Button)sender == btPen1)
-			{
-				SelectPen(1);
-			}
-			else if ((Button)sender == btPen2)
-			{
-				SelectPen(2);
-			}
-			else if ((Button)sender == btPen3)
-			{
-				SelectPen(3);
-			}
-			else if ((Button)sender == btPen4)
-			{
-				SelectPen(4);
-			}
-			else if ((Button)sender == btPen5)
-			{
-				SelectPen(5);
-			}
+			
 		}
 
 		public void btEraser_Click(object sender, EventArgs e)
 		{
-			SelectPen(0);
+			
 		}
 
 		[DllImport("user32.dll")]
