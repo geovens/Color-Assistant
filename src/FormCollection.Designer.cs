@@ -45,7 +45,7 @@
 			this.gpButtons.Controls.Add(this.btStop);
 			this.gpButtons.Location = new System.Drawing.Point(42, 84);
 			this.gpButtons.Name = "gpButtons";
-			this.gpButtons.Size = new System.Drawing.Size(1282, 92);
+			this.gpButtons.Size = new System.Drawing.Size(330, 92);
 			this.gpButtons.TabIndex = 3;
 			// 
 			// btDock
@@ -74,7 +74,7 @@
 			this.btPointer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btPointer.ForeColor = System.Drawing.Color.WhiteSmoke;
 			this.btPointer.Image = global::gInk.Properties.Resources.pointer;
-			this.btPointer.Location = new System.Drawing.Point(670, 5);
+			this.btPointer.Location = new System.Drawing.Point(80, 5);
 			this.btPointer.Name = "btPointer";
 			this.btPointer.Size = new System.Drawing.Size(80, 80);
 			this.btPointer.TabIndex = 0;
@@ -89,7 +89,7 @@
 			this.btStop.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btStop.Image = global::gInk.Properties.Resources.exit;
-			this.btStop.Location = new System.Drawing.Point(1170, 5);
+			this.btStop.Location = new System.Drawing.Point(220, 5);
 			this.btStop.Name = "btStop";
 			this.btStop.Size = new System.Drawing.Size(80, 80);
 			this.btStop.TabIndex = 0;

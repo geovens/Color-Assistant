@@ -64,7 +64,6 @@ namespace gInk
 
 			trayMenu = new ContextMenu();
 			trayMenu.MenuItems.Add("About", OnAbout);
-			trayMenu.MenuItems.Add("Pen Configurations", OnPenSetting);
 			trayMenu.MenuItems.Add("Options", OnOptions);
 			trayMenu.MenuItems.Add("-");
 			trayMenu.MenuItems.Add("Exit", OnExit);
@@ -72,10 +71,7 @@ namespace gInk
             Size size = SystemInformation.SmallIconSize;
             trayIcon = new NotifyIcon();
 			trayIcon.Text = "gInk";
-			if (WhiteTrayIcon)
-				trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_white, size);
-			else
-				trayIcon.Icon = new Icon(gInk.Properties.Resources.icon_red, size);
+			trayIcon.Icon = new Icon("icon.ico");
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
@@ -258,11 +254,6 @@ namespace gInk
 		{
 			FormAbout FormAbout = new FormAbout();
 			FormAbout.Show();
-		}
-
-		private void OnPenSetting(object sender, EventArgs e)
-		{
-			System.Diagnostics.Process.Start("notepad.exe", "pens.ini");
 		}
 
 		private void OnOptions(object sender, EventArgs e)

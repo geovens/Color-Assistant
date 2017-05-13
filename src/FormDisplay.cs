@@ -241,16 +241,12 @@ namespace gInk
 			ReleaseDC(IntPtr.Zero, screenDc);	
 		}
 
+		int Tick = 0;
 		int MaskColor = 0;
 		int MaskColorInterval = 40;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			MaskColor += MaskColorInterval;
-			if (MaskColor < 0 || MaskColor > 128)
-			{
-				MaskColorInterval = -MaskColorInterval;
-				MaskColor += 2 * MaskColorInterval;
-			}
+			Tick++;
 
 			if (Root.UponButtonsUpdate > 0)
 			{
@@ -262,8 +258,15 @@ namespace gInk
 				Root.UponButtonsUpdate = 0;
 			}
 
-			if (Root.InPick)
+			if (Root.InPick && Tick % 6 == 0)
 			{
+				MaskColor += MaskColorInterval;
+				if (MaskColor < 0 || MaskColor > 128)
+				{
+					MaskColorInterval = -MaskColorInterval;
+					MaskColor += 2 * MaskColorInterval;
+				}
+
 				foreach (Point point in MatchPixelList)
 				{
 					SC(point.X, point.Y, (byte)(MaskColor), 50);

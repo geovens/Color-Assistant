@@ -72,7 +72,7 @@ namespace gInk
 			g = Graphics.FromImage(image_pointer_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btPointer.Width, btPointer.Height);
-
+			btPointer.Image = image_pointer_act;
 
 			LastTickTime = DateTime.Parse("1987-01-01");
 			tiSlide.Enabled = true;
