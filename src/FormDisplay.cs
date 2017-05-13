@@ -24,6 +24,9 @@ namespace gInk
 		IntPtr hScreenBitmap;
 		IntPtr memscreenDc;
 
+		int bitbltwidth;
+		int bitbltheight;
+
 		Bitmap gpButtonsImage;
 		SolidBrush TransparentBrush;
 		SolidBrush SemiTransparentBrush;
@@ -168,22 +171,25 @@ namespace gInk
 
 		public byte GC(int i, int j, int c)
 		{
-			return screenbits[(this.Width * j + i) * 4 + c];
+			return screenbits[(Width * j + i) * 4 + c];
 		}
 		public void SC(int i, int j, byte v)
 		{
-			screenbits[(this.Width * j + i) * 4 + 0] = v;
-			screenbits[(this.Width * j + i) * 4 + 1] = v;
-			screenbits[(this.Width * j + i) * 4 + 2] = v;
-			screenbits[(this.Width * j + i) * 4 + 3] = 50;
+			screenbits[(Width * j + i) * 4 + 0] = v;
+			screenbits[(Width * j + i) * 4 + 1] = v;
+			screenbits[(Width * j + i) * 4 + 2] = v;
+			screenbits[(Width * j + i) * 4 + 3] = 50;
 		}
 
 		public void PickColor(int x, int y)
-		{		
-			IntPtr screenDc = GetDC(IntPtr.Zero);
+		{
+			float scalefactor = getScalingFactor();
+			bitbltwidth = (int)(this.Width * scalefactor);
+			bitbltheight = (int)(this.Height * scalefactor);
 
-			BitBlt(memscreenDc, 0, 0, this.Width, this.Height, screenDc, 0, 0, 0x00CC0020);
-			GetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
+			IntPtr screenDc = GetDC(IntPtr.Zero);
+			StretchBlt(memscreenDc, 0, 0, Width, Height, screenDc, 0, 0, bitbltwidth, bitbltheight, 0x00CC0020);
+			GetBitmapBits(hScreenBitmap, Width * Height * 4, screenbits);
 
 			int targetb = GC(x, y, 0);
 			int targetg = GC(x, y, 1);
@@ -232,11 +238,11 @@ namespace gInk
 		}
 
 		int MaskColor = 0;
-		int MaskColorInterval = 10;
+		int MaskColorInterval = 40;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			MaskColor += MaskColorInterval;
-			if (MaskColor < 0 || MaskColor > 255)
+			if (MaskColor < 0 || MaskColor > 128)
 			{
 				MaskColorInterval = -MaskColorInterval;
 				MaskColor += 2 * MaskColorInterval;
@@ -259,10 +265,8 @@ namespace gInk
 					SC(point.X, point.Y, (byte)(MaskColor));
 				}
 
-				IntPtr screenDc = GetDC(IntPtr.Zero);
-				SetBitmapBits(hScreenBitmap, this.Width * this.Height * 4, screenbits);
+				SetBitmapBits(hScreenBitmap, Width * Height * 4, screenbits);
 				BitBlt(canvusDc, 0, 0, this.Width, this.Height, memscreenDc, 0, 0, 0x00CC0020);
-				ReleaseDC(IntPtr.Zero, screenDc);
 
 				DrawButtons(false);
 				UpdateFormDisplay(true);
@@ -277,6 +281,25 @@ namespace gInk
 
 			DeleteObject(hScreenBitmap);
 			DeleteDC(memscreenDc);
+		}
+
+		public enum DeviceCap
+		{
+			VERTRES = 10,
+			DESKTOPVERTRES = 117,
+
+			// http://pinvoke.net/default.aspx/gdi32/GetDeviceCaps.html
+		}
+		private float getScalingFactor()
+		{
+			Graphics g = Graphics.FromHwnd(IntPtr.Zero);
+			IntPtr desktop = g.GetHdc();
+			int LogicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.VERTRES);
+			int PhysicalScreenHeight = GetDeviceCaps(desktop, (int)DeviceCap.DESKTOPVERTRES);
+
+			float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+
+			return ScreenScalingFactor; // 1.25 = 125%
 		}
 
 		[DllImport("user32.dll")]
