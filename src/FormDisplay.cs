@@ -173,12 +173,12 @@ namespace gInk
 		{
 			return screenbits[(Width * j + i) * 4 + c];
 		}
-		public void SC(int i, int j, byte v)
+		public void SC(int i, int j, byte v, byte a)
 		{
 			screenbits[(Width * j + i) * 4 + 0] = v;
 			screenbits[(Width * j + i) * 4 + 1] = v;
 			screenbits[(Width * j + i) * 4 + 2] = v;
-			screenbits[(Width * j + i) * 4 + 3] = 50;
+			screenbits[(Width * j + i) * 4 + 3] = a;
 		}
 
 		public void PickColor(int x, int y)
@@ -202,9 +202,13 @@ namespace gInk
 					int b = GC(i, j, 0);
 					int g = GC(i, j, 1);
 					int r = GC(i, j, 2);
-					if (Math.Abs(b - targetb) < 9 && Math.Abs(g - targetg) < 9 && Math.Abs(r - targetr) < 9)
+					if (Math.Abs(b - targetb) < 25 && Math.Abs(g - targetg) < 25 && Math.Abs(r - targetr) < 25)
 					{
 						MatchPixelList.Add(new Point(i, j));
+					}
+					else
+					{
+						SC(i, j, 0, 0);
 					}
 				}
 			}
@@ -262,7 +266,7 @@ namespace gInk
 			{
 				foreach (Point point in MatchPixelList)
 				{
-					SC(point.X, point.Y, (byte)(MaskColor));
+					SC(point.X, point.Y, (byte)(MaskColor), 50);
 				}
 
 				SetBitmapBits(hScreenBitmap, Width * Height * 4, screenbits);
