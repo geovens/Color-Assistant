@@ -17,7 +17,7 @@ Click the exit button at bottom right of the screen or press ESC to exit picking
 
 #### Download
 
-https://github.com/geovens/Color-Assistant/release
+https://github.com/geovens/Color-Assistant/releases
 
 #### Features
 
