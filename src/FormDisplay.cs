@@ -199,49 +199,6 @@ namespace gInk
 			return lastscreenbits[Llastp];
 		}
 
-		public void SnapShot(Rectangle rect)
-		{
-            string snapbasepath = Root.SnapshotBasePath;
-            snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
-            if (Root.SnapshotBasePath == "%USERPROFILE%/Pictures/gInk/")
-                if (!System.IO.Directory.Exists(snapbasepath))
-                    System.IO.Directory.CreateDirectory(snapbasepath);
-
-            if (System.IO.Directory.Exists(snapbasepath))
-            {
-                IntPtr screenDc = GetDC(IntPtr.Zero);
-
-                const int VERTRES = 10;
-                const int DESKTOPVERTRES = 117;
-                int LogicalScreenHeight = GetDeviceCaps(screenDc, VERTRES);
-                int PhysicalScreenHeight = GetDeviceCaps(screenDc, DESKTOPVERTRES);
-                float ScreenScalingFactor = (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
-
-                rect.X = (int)(rect.X * ScreenScalingFactor);
-                rect.Y = (int)(rect.Y * ScreenScalingFactor);
-                rect.Width = (int)(rect.Width * ScreenScalingFactor);
-                rect.Height = (int)(rect.Height * ScreenScalingFactor);
-
-                IntPtr hDest = CreateCompatibleDC(screenDc);
-                Bitmap tempbmp = new Bitmap(rect.Width, rect.Height);
-                IntPtr hBmp = tempbmp.GetHbitmap();
-                SelectObject(hDest, hBmp);
-                bool b = BitBlt(hDest, 0, 0, rect.Width, rect.Height, screenDc, rect.Left, rect.Top, (uint)(CopyPixelOperation.SourceCopy | CopyPixelOperation.CaptureBlt));
-                tempbmp = Bitmap.FromHbitmap(hBmp);
-                Clipboard.SetImage(tempbmp);
-                DateTime now = DateTime.Now;
-                string nowstr = now.Year.ToString() + "-" + now.Month.ToString("D2") + "-" + now.Day.ToString("D2") + " " + now.Hour.ToString("D2") + "-" + now.Minute.ToString("D2") + "-" + now.Second.ToString("D2");
-
-                tempbmp.Save(snapbasepath + nowstr + ".jpg");
-                tempbmp.Dispose();
-                DeleteObject(hBmp);
-                ReleaseDC(IntPtr.Zero, screenDc);
-                DeleteDC(hDest);
-
-                Root.UponBalloonSnap = true;
-            }
-		}
-
 		public int Test()
 		{		
 			IntPtr screenDc = GetDC(IntPtr.Zero);
@@ -342,7 +299,18 @@ namespace gInk
 		{
 			Tick++;
 
-			DrawButtons(false);
+			if (Root.UponButtonsUpdate > 0)
+			{
+				if ((Root.UponButtonsUpdate & 0x2) > 0)
+					DrawButtons(true, true);
+				else if ((Root.UponButtonsUpdate & 0x1) > 0)
+					DrawButtons(false, true);
+				UpdateFormDisplay(true);
+				Root.UponButtonsUpdate = 0;
+			}
+
+			// temp
+			//DrawButtons(false);
 			UpdateFormDisplay(true);
 
 			

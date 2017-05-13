@@ -15,14 +15,9 @@ namespace gInk
 	{
 		public Root Root;
 
-		public Bitmap image_exit, image_clear, image_undo, image_snap;
+		public Bitmap image_exit;
 		public Bitmap image_dock, image_dockback;
-		public Bitmap image_pencil, image_highlighter, image_pencil_act, image_highlighter_act;
 		public Bitmap image_pointer, image_pointer_act;
-		public Bitmap image_pen1, image_pen2, image_pen3, image_pen4, image_pen5;
-		public Bitmap image_pen1_act, image_pen2_act, image_pen3_act, image_pen4_act, image_pen5_act;
-		public Bitmap image_eraser_act, image_eraser;
-		public System.Windows.Forms.Cursor cursorred, cursorblue, cursoryellow;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
 		public int gpButtonsLeft, gpButtonsTop;
@@ -56,30 +51,6 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.exit, 0, 0, btStop.Width, btStop.Height);
 			btStop.Image = image_exit;
-			image_clear = new Bitmap(btClear.Width, btClear.Height);
-			g = Graphics.FromImage(image_clear);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.garbage, 0, 0, btClear.Width, btClear.Height);
-			btClear.Image = image_clear;
-			image_undo = new Bitmap(btUndo.Width, btUndo.Height);
-			g = Graphics.FromImage(image_undo);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.undo, 0, 0, btUndo.Width, btUndo.Height);
-			btUndo.Image = image_undo;
-			image_eraser_act = new Bitmap(btEraser.Width, btEraser.Height);
-			g = Graphics.FromImage(image_eraser_act);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.eraser_act, 0, 0, btEraser.Width, btEraser.Height);
-			image_eraser = new Bitmap(btEraser.Width, btEraser.Height);
-			g = Graphics.FromImage(image_eraser);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.eraser, 0, 0, btEraser.Width, btEraser.Height);
-			btEraser.Image = image_eraser;
-			image_snap = new Bitmap(btSnap.Width, btSnap.Height);
-			g = Graphics.FromImage(image_snap);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.snap, 0, 0, btSnap.Width, btSnap.Height);
-			btSnap.Image = image_snap;
 			image_dock = new Bitmap(btDock.Width, btDock.Height);
 			g = Graphics.FromImage(image_dock);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -93,23 +64,6 @@ namespace gInk
 			else
 				btDock.Image = image_dock;
 
-			image_pencil = new Bitmap(btPen3.Width, btPen3.Height);
-			g = Graphics.FromImage(image_pencil);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pencil, 0, 0, btPen3.Width, btPen3.Height);
-			image_highlighter = new Bitmap(btPen3.Width, btPen3.Height);
-			g = Graphics.FromImage(image_highlighter);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.highlighter, 0, 0, btPen3.Width, btPen3.Height);
-			image_pencil_act = new Bitmap(btPen3.Width, btPen3.Height);
-			g = Graphics.FromImage(image_pencil_act);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pencil_act, 0, 0, btPen3.Width, btPen3.Height);
-			image_highlighter_act = new Bitmap(btPen3.Width, btPen3.Height);
-			g = Graphics.FromImage(image_highlighter_act);
-			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.highlighter_act, 0, 0, btPen3.Width, btPen3.Height);
-
 			image_pointer = new Bitmap(btPointer.Width, btPointer.Height);
 			g = Graphics.FromImage(image_pointer);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
@@ -119,71 +73,6 @@ namespace gInk
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btPointer.Width, btPointer.Height);
 
-			btPen1.BackColor = Root.Pen1.Color;
-			btPen2.BackColor = Root.Pen2.Color;
-			btPen3.BackColor = Root.Pen3.Color;
-			btPen4.BackColor = Root.Pen4.Color;
-			btPen5.BackColor = Root.Pen5.Color;
-			btPen1.FlatAppearance.MouseDownBackColor = Root.Pen1.Color;
-			btPen2.FlatAppearance.MouseDownBackColor = Root.Pen2.Color;
-			btPen3.FlatAppearance.MouseDownBackColor = Root.Pen3.Color;
-			btPen4.FlatAppearance.MouseDownBackColor = Root.Pen4.Color;
-			btPen5.FlatAppearance.MouseDownBackColor = Root.Pen5.Color;
-			btPen1.FlatAppearance.MouseOverBackColor = Root.Pen1.Color;
-			btPen2.FlatAppearance.MouseOverBackColor = Root.Pen2.Color;
-			btPen3.FlatAppearance.MouseOverBackColor = Root.Pen3.Color;
-			btPen4.FlatAppearance.MouseOverBackColor = Root.Pen4.Color;
-			btPen5.FlatAppearance.MouseOverBackColor = Root.Pen5.Color;
-			if (Root.Pen1.Transparency >= 100)
-			{
-				image_pen1 = image_highlighter;
-				image_pen1_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen1 = image_pencil;
-				image_pen1_act = image_pencil_act;
-			}
-			if (Root.Pen2.Transparency >= 100)
-			{
-				image_pen2 = image_highlighter;
-				image_pen2_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen2 = image_pencil;
-				image_pen2_act = image_pencil_act;
-			}
-			if (Root.Pen3.Transparency >= 100)
-			{
-				image_pen3 = image_highlighter;
-				image_pen3_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen3 = image_pencil;
-				image_pen3_act = image_pencil_act;
-			}
-			if (Root.Pen4.Transparency >= 100)
-			{
-				image_pen4 = image_highlighter;
-				image_pen4_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen4 = image_pencil;
-				image_pen4_act = image_pencil_act;
-			}
-			if (Root.Pen5.Transparency >= 100)
-			{
-				image_pen5 = image_highlighter;
-				image_pen5_act = image_highlighter_act;
-			}
-			else
-			{
-				image_pen5 = image_pencil;
-				image_pen5_act = image_pencil_act;
-			}
 
 			LastTickTime = DateTime.Parse("1987-01-01");
 			tiSlide.Enabled = true;
@@ -262,12 +151,7 @@ namespace gInk
 
 		public void btPointer_Click(object sender, EventArgs e)
 		{
-
-		}
-
-		public void btSnap_Click(object sender, EventArgs e)
-		{
-
+			Console.WriteLine("Pointer Botton Being Clicked");
 		}
 
 		public void btStop_Click(object sender, EventArgs e)
@@ -295,9 +179,7 @@ namespace gInk
 			int aimedleft = gpButtonsLeft;
 			if (ButtonsEntering == 0)
 			{
-				if (Root.Snapping > 0)
-					aimedleft = gpButtonsLeft + gpButtons.Width + 5;
-				else if (Root.Docked)
+				if (Root.Docked)
 					aimedleft = gpButtonsLeft + gpButtons.Width - btDock.Right;
 				else
 					aimedleft = gpButtonsLeft;
@@ -351,35 +233,12 @@ namespace gInk
 				return;
 			}
 
-			if (!Root.PointerMode && !this.TopMost)
-				ToTopMost();
-
 			short retVal = GetKeyState(27);
 			if ((retVal & 0x8000) == 0x8000)
 			{
 				RetreatAndExit();
 			}
 
-		}
-
-		public void btClear_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void btUndo_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		public void btColor_Click(object sender, EventArgs e)
-		{
-			
-		}
-
-		public void btEraser_Click(object sender, EventArgs e)
-		{
-			
 		}
 
 		[DllImport("user32.dll")]

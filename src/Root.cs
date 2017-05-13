@@ -40,27 +40,15 @@ namespace gInk
 	public class Root
 	{
 		// options
-		public DrawingAttributes Pen1, Pen2, Pen3, Pen4, Pen5;
 		public bool Hotkey_Control, Hotkey_Alt, Hotkey_Shift, Hotkey_Win;
 		public int Hotkey;
 		public bool AutoScroll;
 		public bool WhiteTrayIcon;
-		public string SnapshotBasePath;
 
-		public bool EraserMode = false;
 		public bool Docked = false;
-		public bool PointerMode = false;
-		public int Snapping = 0;  // <=0: not snapping, 1: waiting finger, 2:dragging
-		public int SnappingX = -1, SnappingY = -1;
-		public Rectangle SnappingRect;
-		public int UponButtonsUpdate = 0;
-		public bool UponTakingSnap = false;
-        public bool UponBalloonSnap = false;
 
-		public Ink[] UndoStrokes;
-		//public Ink UponUndoStrokes;
-		public int UndoP;
-		public int UndoDepth, RedoDepth;
+		public int UponButtonsUpdate = 0;
+        public bool UponBalloonSnap = false;
 
 		private NotifyIcon trayIcon;
 		private ContextMenu trayMenu;
@@ -68,11 +56,8 @@ namespace gInk
 		public FormDisplay FormDisplay;
 		public FormButtonHitter FormButtonHitter;
 
-		public int CurrentPen = 1;  // defaut pen
-
 		public Root()
 		{
-			SetDefaultPens();
 			SetDefaultConfig();
 			ReadOptions("pens.ini");
 			ReadOptions("config.ini");
@@ -94,8 +79,6 @@ namespace gInk
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
-            trayIcon.BalloonTipText = "Snapshot saved. Click here to browse snapshots.";
-            trayIcon.BalloonTipClicked += TrayIcon_BalloonTipClicked;
 
 
             int modifier = 0;
@@ -112,13 +95,6 @@ namespace gInk
 			FormCollection = null;
 			FormDisplay = null;
 		}
-
-        private void TrayIcon_BalloonTipClicked(object sender, EventArgs e)
-        {
-            string snapbasepath = SnapshotBasePath;
-            snapbasepath = Environment.ExpandEnvironmentVariables(snapbasepath);
-            System.Diagnostics.Process.Start(snapbasepath);
-        }
 
         private void TrayIcon_Click(object sender, MouseEventArgs e)
 		{
@@ -144,8 +120,7 @@ namespace gInk
 			FormDisplay = new FormDisplay(this);
 			FormCollection = new FormCollection(this);
 			FormButtonHitter = new FormButtonHitter(this);
-			if (CurrentPen <= 0)
-				CurrentPen = 1;
+
 			FormDisplay.Show();
 			FormCollection.Show();
 			FormDisplay.DrawButtons(true);
@@ -182,34 +157,6 @@ namespace gInk
 			UponButtonsUpdate |= 0x2;
 		}
 
-		public void SetDefaultPens()
-		{
-			Pen1 = new DrawingAttributes();
-			Pen1.Color = Color.FromArgb(220, 95, 60);
-			Pen1.Width = 80;
-			Pen1.Transparency = 5;
-
-			Pen2 = new DrawingAttributes();
-			Pen2.Color = Color.FromArgb(30, 110, 200);
-			Pen2.Width = 80;
-			Pen2.Transparency = 5;
-
-			Pen3 = new DrawingAttributes();
-			Pen3.Color = Color.FromArgb(235, 180, 55);
-			Pen3.Width = 80;
-			Pen3.Transparency = 5;
-
-			Pen4 = new DrawingAttributes();
-			Pen4.Color = Color.FromArgb(120, 175, 70);
-			Pen4.Width = 80;
-			Pen4.Transparency = 5;
-
-			Pen5 = new DrawingAttributes();
-			Pen5.Color = Color.FromArgb(145, 70, 160);
-			Pen5.Width = 500;
-			Pen5.Transparency = 200;
-		}
-
 		public void SetDefaultConfig()
 		{
 			Hotkey_Control = true;
@@ -220,7 +167,6 @@ namespace gInk
 
 			AutoScroll = false;
 			WhiteTrayIcon = false;
-			SnapshotBasePath = "%USERPROFILE%/Pictures/gInk/";
 		}
 
 		public void ReadOptions(string file)
@@ -261,109 +207,6 @@ namespace gInk
 					int o;
 					switch (sName)
 					{
-						case "PEN1_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen1.Color = Color.FromArgb(int.Parse(sPara), Pen1.Color.G, Pen1.Color.B);
-							break;
-						case "PEN1_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen1.Color = Color.FromArgb(Pen1.Color.R, int.Parse(sPara), Pen1.Color.B);
-							break;
-						case "PEN1_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen1.Color = Color.FromArgb(Pen1.Color.R, Pen1.Color.G, int.Parse(sPara));
-							break;
-						case "PEN2_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen2.Color = Color.FromArgb(int.Parse(sPara), Pen2.Color.G, Pen2.Color.B);
-							break;
-						case "PEN2_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen2.Color = Color.FromArgb(Pen2.Color.R, int.Parse(sPara), Pen2.Color.B);
-							break;
-						case "PEN2_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen2.Color = Color.FromArgb(Pen2.Color.R, Pen2.Color.G, int.Parse(sPara));
-							break;
-						case "PEN3_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen3.Color = Color.FromArgb(int.Parse(sPara), Pen3.Color.G, Pen3.Color.B);
-							break;
-						case "PEN3_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen3.Color = Color.FromArgb(Pen3.Color.R, int.Parse(sPara), Pen3.Color.B);
-							break;
-						case "PEN3_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen3.Color = Color.FromArgb(Pen3.Color.R, Pen3.Color.G, int.Parse(sPara));
-							break;
-						case "PEN4_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen4.Color = Color.FromArgb(int.Parse(sPara), Pen4.Color.G, Pen4.Color.B);
-							break;
-						case "PEN4_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen4.Color = Color.FromArgb(Pen4.Color.R, int.Parse(sPara), Pen4.Color.B);
-							break;
-						case "PEN4_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen4.Color = Color.FromArgb(Pen4.Color.R, Pen4.Color.G, int.Parse(sPara));
-							break;
-						case "PEN5_RED":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen5.Color = Color.FromArgb(int.Parse(sPara), Pen5.Color.G, Pen5.Color.B);
-							break;
-						case "PEN5_GREEN":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen5.Color = Color.FromArgb(Pen5.Color.R, int.Parse(sPara), Pen5.Color.B);
-							break;
-						case "PEN5_BLUE":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen5.Color = Color.FromArgb(Pen5.Color.R, Pen5.Color.G, int.Parse(sPara));
-							break;
-
-						case "PEN1_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen1.Transparency = (byte)(255 - o);
-							break;
-						case "PEN2_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen2.Transparency = (byte)(255 - o);
-							break;
-						case "PEN3_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen3.Transparency = (byte)(255 - o);
-							break;
-						case "PEN4_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen4.Transparency = (byte)(255 - o);
-							break;
-						case "PEN5_ALPHA":
-							if (int.TryParse(sPara, out o) && o >= 0 && o <= 255)
-								Pen5.Transparency = (byte)(255 - o);
-							break;
-
-						case "PEN1_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								Pen1.Width = o;
-							break;
-						case "PEN2_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								Pen2.Width = o;
-							break;
-						case "PEN3_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								Pen3.Width = o;
-							break;
-						case "PEN4_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								Pen4.Width = o;
-							break;
-						case "PEN5_WIDTH":
-							if (int.TryParse(sPara, out o) && o > 30 && o <= 3000)
-								Pen5.Width = o;
-							break;
-
 						case "HOTKEY":
 							sPara = sPara.ToUpper();
 							if (sPara.Contains("CONTROL"))
@@ -398,11 +241,6 @@ namespace gInk
 								WhiteTrayIcon = true;
 							else
 								WhiteTrayIcon = false;
-							break;
-						case "SNAPSHOTPATH":
-							SnapshotBasePath = sPara;
-							if (!SnapshotBasePath.EndsWith("/") && !SnapshotBasePath.EndsWith("\\"))
-								SnapshotBasePath += "/";
 							break;
 					}
 				}
