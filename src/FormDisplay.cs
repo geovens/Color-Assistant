@@ -151,6 +151,12 @@ namespace gInk
 			g.DrawImage(gpButtonsImage, left, top);
 		}
 
+		public void DrawTest(int x, int y)
+		{
+			Pen bp = new Pen(Color.FromArgb(250, 250, 0, 0));
+			gCanvus.DrawLine(bp, new Point(x, y), new Point(x + 100, y + 100));
+		}
+
 		public void DrawStrokes()
 		{
 			Root.FormCollection.IC.Renderer.Draw(gCanvus, Root.FormCollection.IC.Ink.Strokes);
@@ -349,14 +355,16 @@ namespace gInk
 			//Clean-up
 			ReleaseDC(IntPtr.Zero, screenDc);	
 		}
-		
+
 		int stackmove = 0;
 		int Tick = 0;
 		DateTime TickStartTime;
 		private void timer1_Tick(object sender, EventArgs e)
 		{
 			Tick++;
-			
+
+			UpdateFormDisplay(true);
+
 			/*
 			if (Tick == 1)
 				TickStartTime = DateTime.Now;
@@ -367,77 +375,10 @@ namespace gInk
 			}
 			*/
 
-			if (Root.UponTakingSnap)
-			{
-				if (Root.SnappingRect.Width == this.Width && Root.SnappingRect.Height == this.Height)
-					System.Threading.Thread.Sleep(200);
-				ClearCanvus();
-				DrawStrokes();
-				//DrawButtons(false);
-				UpdateFormDisplay(true);
-				SnapShot(Root.SnappingRect);
-				Root.UponTakingSnap = false;
-                if (Root.FormCollection.IC.Ink.Strokes.Count == 0)
-					Root.FormCollection.RetreatAndExit();
-			}
 
-			else if (Root.Snapping > 0)
-			{
-				ClearCanvus();
-				DrawStrokes();
-				DrawButtons(false);
-				DrawSnapping(Root.SnappingRect);
-				UpdateFormDisplay(true);
-			}
 
-			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == false)
-			{
-				//ClearCanvus();
-				//DrawStrokes();
-				//DrawButtons(false);
-				//UpdateFormDisplay();	
-				if (Root.FormCollection.IC.Ink.Strokes.Count > 0)
-				{
-					Stroke stroke = Root.FormCollection.IC.Ink.Strokes[Root.FormCollection.IC.Ink.Strokes.Count - 1];
-					if (!stroke.Deleted)
-					{
-						Rectangle box = stroke.GetBoundingBox();
-						Point lt = new Point(box.Left, box.Top);
-						Point rb = new Point(box.Right, box.Bottom);
-						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref lt);
-						Root.FormCollection.IC.Renderer.InkSpaceToPixel(gCanvus, ref rb);
-						BitBlt(canvusDc, lt.X, lt.Y, rb.X - lt.X, rb.Y - lt.Y, onestrokeDc, lt.X, lt.Y, (uint)CopyPixelOperation.SourceCopy);
-						Root.FormCollection.IC.Renderer.Draw(gCanvus, stroke, Root.FormCollection.IC.DefaultDrawingAttributes);
-					}
-					UpdateFormDisplay(true);
-				}
-			}
 
-			else if (Root.FormCollection.IC.CollectingInk && Root.EraserMode == true)
-			{
-				ClearCanvus();
-				DrawStrokes();
-				DrawButtons(false);
-				UpdateFormDisplay(true);
-			}
-
-			else if (Root.Snapping < -58)
-			{
-				ClearCanvus();
-				DrawStrokes();
-				DrawButtons(false);
-				UpdateFormDisplay(true);
-			}
-
-			else if (Root.UponButtonsUpdate > 0)
-			{
-				if ((Root.UponButtonsUpdate & 0x2) > 0)
-					DrawButtons(true, true);
-				else if ((Root.UponButtonsUpdate & 0x1) > 0)
-					DrawButtons(false, true);
-				UpdateFormDisplay(true);
-				Root.UponButtonsUpdate = 0;
-			}
+			
 
 			if (Root.AutoScroll && Root.PointerMode)
 			{

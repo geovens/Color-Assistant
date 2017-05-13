@@ -277,6 +277,7 @@
 			this.Load += new System.EventHandler(this.Form1_Load);
 			this.gpButtons.ResumeLayout(false);
 			this.ResumeLayout(false);
+			this.MouseDown += FormCollection_MouseDown;
 
 		}
 

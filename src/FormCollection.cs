@@ -487,6 +487,13 @@ namespace gInk
 		{
 		}
 
+		private void FormCollection_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+		{
+			Console.WriteLine("(" + e.X.ToString() + ", " + e.Y.ToString() + ")");
+
+			Root.FormDisplay.DrawTest(e.X, e.Y);
+		}
+
 		public void btDock_Click(object sender, EventArgs e)
 		{
 			LastTickTime = DateTime.Now;
