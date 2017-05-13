@@ -70,7 +70,7 @@ namespace gInk
 
             Size size = SystemInformation.SmallIconSize;
             trayIcon = new NotifyIcon();
-			trayIcon.Text = "gInk";
+			trayIcon.Text = "Color Assistant";
 			trayIcon.Icon = new Icon("icon.ico");
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
