@@ -71,7 +71,10 @@ namespace gInk
             Size size = SystemInformation.SmallIconSize;
             trayIcon = new NotifyIcon();
 			trayIcon.Text = "Color Assistant";
-			trayIcon.Icon = new Icon("icon.ico");
+			if (File.Exists("icon.ico"))
+				trayIcon.Icon = new Icon("icon.ico");
+			else
+				trayIcon.Icon = global::gInk.Properties.Resources.icon;
 			trayIcon.ContextMenu = trayMenu;
 			trayIcon.Visible = true;
 			trayIcon.MouseClick += TrayIcon_Click;
