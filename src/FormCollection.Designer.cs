@@ -62,7 +62,7 @@
 			this.btTHnarrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btTHnarrow.ForeColor = System.Drawing.Color.WhiteSmoke;
 			this.btTHnarrow.Image = global::gInk.Properties.Resources.thnarrow;
-			this.btTHnarrow.Location = new System.Drawing.Point(176, 3);
+			this.btTHnarrow.Location = new System.Drawing.Point(181, 3);
 			this.btTHnarrow.Margin = new System.Windows.Forms.Padding(2);
 			this.btTHnarrow.Name = "btTHnarrow";
 			this.btTHnarrow.Size = new System.Drawing.Size(46, 46);
@@ -79,7 +79,7 @@
 			this.btTHmiddle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btTHmiddle.ForeColor = System.Drawing.Color.WhiteSmoke;
 			this.btTHmiddle.Image = global::gInk.Properties.Resources.thmiddle;
-			this.btTHmiddle.Location = new System.Drawing.Point(126, 3);
+			this.btTHmiddle.Location = new System.Drawing.Point(131, 3);
 			this.btTHmiddle.Margin = new System.Windows.Forms.Padding(2);
 			this.btTHmiddle.Name = "btTHmiddle";
 			this.btTHmiddle.Size = new System.Drawing.Size(46, 46);
@@ -114,7 +114,7 @@
 			this.btTHwide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btTHwide.ForeColor = System.Drawing.Color.WhiteSmoke;
 			this.btTHwide.Image = global::gInk.Properties.Resources.thwide;
-			this.btTHwide.Location = new System.Drawing.Point(61, 3);
+			this.btTHwide.Location = new System.Drawing.Point(66, 3);
 			this.btTHwide.Margin = new System.Windows.Forms.Padding(2);
 			this.btTHwide.Name = "btTHwide";
 			this.btTHwide.Size = new System.Drawing.Size(46, 46);
