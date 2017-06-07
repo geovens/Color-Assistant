@@ -30,12 +30,12 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.gpButtons = new System.Windows.Forms.Panel();
+			this.btTHnarrow = new System.Windows.Forms.Button();
+			this.btTHmiddle = new System.Windows.Forms.Button();
 			this.btDock = new System.Windows.Forms.Button();
 			this.btTHwide = new System.Windows.Forms.Button();
 			this.btStop = new System.Windows.Forms.Button();
 			this.tiSlide = new System.Windows.Forms.Timer(this.components);
-			this.btTHmiddle = new System.Windows.Forms.Button();
-			this.btTHnarrow = new System.Windows.Forms.Button();
 			this.gpButtons.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -48,10 +48,44 @@
 			this.gpButtons.Controls.Add(this.btTHwide);
 			this.gpButtons.Controls.Add(this.btStop);
 			this.gpButtons.Location = new System.Drawing.Point(24, 48);
-			this.gpButtons.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.gpButtons.Margin = new System.Windows.Forms.Padding(2);
 			this.gpButtons.Name = "gpButtons";
 			this.gpButtons.Size = new System.Drawing.Size(304, 53);
 			this.gpButtons.TabIndex = 3;
+			// 
+			// btTHnarrow
+			// 
+			this.btTHnarrow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btTHnarrow.FlatAppearance.BorderSize = 0;
+			this.btTHnarrow.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btTHnarrow.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btTHnarrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btTHnarrow.ForeColor = System.Drawing.Color.WhiteSmoke;
+			this.btTHnarrow.Image = global::gInk.Properties.Resources.thnarrow;
+			this.btTHnarrow.Location = new System.Drawing.Point(176, 3);
+			this.btTHnarrow.Margin = new System.Windows.Forms.Padding(2);
+			this.btTHnarrow.Name = "btTHnarrow";
+			this.btTHnarrow.Size = new System.Drawing.Size(46, 46);
+			this.btTHnarrow.TabIndex = 2;
+			this.btTHnarrow.UseVisualStyleBackColor = true;
+			this.btTHnarrow.Click += new System.EventHandler(this.btTH_Click);
+			// 
+			// btTHmiddle
+			// 
+			this.btTHmiddle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.btTHmiddle.FlatAppearance.BorderSize = 0;
+			this.btTHmiddle.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btTHmiddle.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
+			this.btTHmiddle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btTHmiddle.ForeColor = System.Drawing.Color.WhiteSmoke;
+			this.btTHmiddle.Image = global::gInk.Properties.Resources.thmiddle;
+			this.btTHmiddle.Location = new System.Drawing.Point(126, 3);
+			this.btTHmiddle.Margin = new System.Windows.Forms.Padding(2);
+			this.btTHmiddle.Name = "btTHmiddle";
+			this.btTHmiddle.Size = new System.Drawing.Size(46, 46);
+			this.btTHmiddle.TabIndex = 1;
+			this.btTHmiddle.UseVisualStyleBackColor = true;
+			this.btTHmiddle.Click += new System.EventHandler(this.btTH_Click);
 			// 
 			// btDock
 			// 
@@ -64,7 +98,7 @@
 			this.btDock.ForeColor = System.Drawing.Color.WhiteSmoke;
 			this.btDock.Image = global::gInk.Properties.Resources.dock;
 			this.btDock.Location = new System.Drawing.Point(0, 3);
-			this.btDock.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btDock.Margin = new System.Windows.Forms.Padding(2);
 			this.btDock.Name = "btDock";
 			this.btDock.Size = new System.Drawing.Size(34, 46);
 			this.btDock.TabIndex = 0;
@@ -79,9 +113,9 @@
 			this.btTHwide.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
 			this.btTHwide.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btTHwide.ForeColor = System.Drawing.Color.WhiteSmoke;
-			this.btTHwide.Image = global::gInk.Properties.Resources.pointer;
-			this.btTHwide.Location = new System.Drawing.Point(46, 3);
-			this.btTHwide.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btTHwide.Image = global::gInk.Properties.Resources.thwide;
+			this.btTHwide.Location = new System.Drawing.Point(61, 3);
+			this.btTHwide.Margin = new System.Windows.Forms.Padding(2);
 			this.btTHwide.Name = "btTHwide";
 			this.btTHwide.Size = new System.Drawing.Size(46, 46);
 			this.btTHwide.TabIndex = 0;
@@ -97,7 +131,7 @@
 			this.btStop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btStop.Image = global::gInk.Properties.Resources.exit;
 			this.btStop.Location = new System.Drawing.Point(246, 3);
-			this.btStop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.btStop.Margin = new System.Windows.Forms.Padding(2);
 			this.btStop.Name = "btStop";
 			this.btStop.Size = new System.Drawing.Size(46, 46);
 			this.btStop.TabIndex = 0;
@@ -109,40 +143,6 @@
 			this.tiSlide.Interval = 15;
 			this.tiSlide.Tick += new System.EventHandler(this.tiSlide_Tick);
 			// 
-			// btTHmiddle
-			// 
-			this.btTHmiddle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btTHmiddle.FlatAppearance.BorderSize = 0;
-			this.btTHmiddle.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btTHmiddle.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btTHmiddle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btTHmiddle.ForeColor = System.Drawing.Color.WhiteSmoke;
-			this.btTHmiddle.Image = global::gInk.Properties.Resources.pointer;
-			this.btTHmiddle.Location = new System.Drawing.Point(106, 3);
-			this.btTHmiddle.Margin = new System.Windows.Forms.Padding(2);
-			this.btTHmiddle.Name = "btTHmiddle";
-			this.btTHmiddle.Size = new System.Drawing.Size(46, 46);
-			this.btTHmiddle.TabIndex = 1;
-			this.btTHmiddle.UseVisualStyleBackColor = true;
-			this.btTHmiddle.Click += new System.EventHandler(this.btTH_Click);
-			// 
-			// btTHnarrow
-			// 
-			this.btTHnarrow.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-			this.btTHnarrow.FlatAppearance.BorderSize = 0;
-			this.btTHnarrow.FlatAppearance.MouseDownBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btTHnarrow.FlatAppearance.MouseOverBackColor = System.Drawing.Color.WhiteSmoke;
-			this.btTHnarrow.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btTHnarrow.ForeColor = System.Drawing.Color.WhiteSmoke;
-			this.btTHnarrow.Image = global::gInk.Properties.Resources.pointer;
-			this.btTHnarrow.Location = new System.Drawing.Point(166, 3);
-			this.btTHnarrow.Margin = new System.Windows.Forms.Padding(2);
-			this.btTHnarrow.Name = "btTHnarrow";
-			this.btTHnarrow.Size = new System.Drawing.Size(46, 46);
-			this.btTHnarrow.TabIndex = 2;
-			this.btTHnarrow.UseVisualStyleBackColor = true;
-			this.btTHnarrow.Click += new System.EventHandler(this.btTH_Click);
-			// 
 			// FormCollection
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -152,7 +152,7 @@
 			this.Controls.Add(this.gpButtons);
 			this.ForeColor = System.Drawing.Color.LawnGreen;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormCollection";

@@ -145,6 +145,13 @@
     <None Include="buttonback.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="thnarrow_act.png" />
+    <None Include="thmiddle_act.png" />
+    <None Include="thwide_act.png" />
+    <None Include="thwide.png" />
+    <None Include="thnarrow.png" />
+    <None Include="thmiddle.png" />
+    <None Include="Resources\pointer.png" />
     <None Include="Resources\icon.ico" />
     <None Include="pointer_act.png" />
     <None Include="pointer.png" />

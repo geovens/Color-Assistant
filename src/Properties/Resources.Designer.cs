@@ -103,9 +103,9 @@ namespace gInk.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap pointer {
+        public static System.Drawing.Bitmap thmiddle {
             get {
-                object obj = ResourceManager.GetObject("pointer", resourceCulture);
+                object obj = ResourceManager.GetObject("thmiddle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,49 @@ namespace gInk.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap pointer_act {
+        public static System.Drawing.Bitmap thmiddle_act {
             get {
-                object obj = ResourceManager.GetObject("pointer_act", resourceCulture);
+                object obj = ResourceManager.GetObject("thmiddle_act", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap thnarrow {
+            get {
+                object obj = ResourceManager.GetObject("thnarrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap thnarrow_act {
+            get {
+                object obj = ResourceManager.GetObject("thnarrow_act", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap thwide {
+            get {
+                object obj = ResourceManager.GetObject("thwide", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap thwide_act {
+            get {
+                object obj = ResourceManager.GetObject("thwide_act", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

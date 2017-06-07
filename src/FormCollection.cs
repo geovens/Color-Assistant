@@ -68,31 +68,31 @@ namespace gInk
 			image_thnarrow = new Bitmap(btTHwide.Width, btTHwide.Height);
 			g = Graphics.FromImage(image_thnarrow);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer, 0, 0, btTHwide.Width, btTHwide.Height);
+			g.DrawImage(global::gInk.Properties.Resources.thnarrow, 0, 0, btTHwide.Width, btTHwide.Height);
 			image_thnarrow_act = new Bitmap(btTHwide.Width, btTHwide.Height);
 			g = Graphics.FromImage(image_thnarrow_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btTHwide.Width, btTHwide.Height);
+			g.DrawImage(global::gInk.Properties.Resources.thnarrow_act, 0, 0, btTHwide.Width, btTHwide.Height);
 			btTHnarrow.Image = image_thnarrow_act;
 
 			image_thmiddle = new Bitmap(btTHwide.Width, btTHwide.Height);
 			g = Graphics.FromImage(image_thmiddle);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer, 0, 0, btTHwide.Width, btTHwide.Height);
+			g.DrawImage(global::gInk.Properties.Resources.thmiddle, 0, 0, btTHwide.Width, btTHwide.Height);
 			image_thmiddle_act = new Bitmap(btTHwide.Width, btTHwide.Height);
 			g = Graphics.FromImage(image_thmiddle_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btTHwide.Width, btTHwide.Height);
+			g.DrawImage(global::gInk.Properties.Resources.thmiddle_act, 0, 0, btTHwide.Width, btTHwide.Height);
 			btTHmiddle.Image = image_thmiddle_act;
 
 			image_thwide = new Bitmap(btTHwide.Width, btTHwide.Height);
 			g = Graphics.FromImage(image_thwide);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer, 0, 0, btTHwide.Width, btTHwide.Height);
+			g.DrawImage(global::gInk.Properties.Resources.thwide, 0, 0, btTHwide.Width, btTHwide.Height);
 			image_thwide_act = new Bitmap(btTHwide.Width, btTHwide.Height);
 			g = Graphics.FromImage(image_thwide_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btTHwide.Width, btTHwide.Height);
+			g.DrawImage(global::gInk.Properties.Resources.thwide_act, 0, 0, btTHwide.Width, btTHwide.Height);
 			btTHwide.Image = image_thwide_act;
 
 			LastTickTime = DateTime.Parse("1987-01-01");

@@ -130,10 +130,22 @@
   <data name="icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\icon.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pointer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\pointer.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="thmiddle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\thmiddle.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pointer_act" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\pointer_act.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="thmiddle_act" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\thmiddle_act.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thnarrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\thnarrow.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thnarrow_act" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\thnarrow_act.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thwide" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\thwide.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="thwide_act" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\thwide_act.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
