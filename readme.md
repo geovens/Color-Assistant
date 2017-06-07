@@ -12,8 +12,9 @@ Color Assistant is in open beta, and any suggestions about how it could better h
 
 #### How to use
 
-Run Color Assistant, and an icon will appear in the system tray. Click the icon (or use a hotkey, default Ctrl+Alt+C) to start picking colors on screen. Click and hold left mouse button on a color to flash it.
-Click the exit button at bottom right of the screen or press ESC to exit picking colors.  
+Run Color Assistant, and an icon will appear in the system tray. Click the icon (or use a hotkey, default Ctrl+Alt+C) to enter color-flashing mode. Click and hold left mouse button on a color to flash it.
+Click the exit button at bottom right of the screen or press ESC to exit color-flashing mode.  
+You can choose from 3 color difference thresholds (wide, normal, narrow) using the 3 corresponding buttons at bottom right of the screen.  
 
 #### Download
 
@@ -21,7 +22,7 @@ https://github.com/geovens/Color-Assistant/releases
 
 #### Features
 
-Works for anything on the screen (web browser, PDF documents, Microsoft Word documents, whatever)  
+Works for anything on the screen (web browsers, PDF documents, Microsoft Word documents, whatever)  
 Should work fine for multiple displays (currently untested)
 
 ----

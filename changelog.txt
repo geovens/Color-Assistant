@@ -1,4 +1,8 @@
 
+v0.2 (Jun. 7, 2017)
+=================
+- Add choices of color difference thresholds.
+
 v0.1.1 (May. 14, 2017)
 =================
 - Fix crash when icon file not found.
