@@ -17,7 +17,7 @@ namespace gInk
 
 		public Bitmap image_exit;
 		public Bitmap image_dock, image_dockback;
-		public Bitmap image_pointer, image_pointer_act;
+		public Bitmap image_thnarrow, image_thnarrow_act, image_thmiddle, image_thmiddle_act, image_thwide, image_thwide_act;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
 		public int gpButtonsLeft, gpButtonsTop;
@@ -64,18 +64,41 @@ namespace gInk
 			else
 				btDock.Image = image_dock;
 
-			image_pointer = new Bitmap(btPointer.Width, btPointer.Height);
-			g = Graphics.FromImage(image_pointer);
+
+			image_thnarrow = new Bitmap(btTHwide.Width, btTHwide.Height);
+			g = Graphics.FromImage(image_thnarrow);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer, 0, 0, btPointer.Width, btPointer.Height);
-			image_pointer_act = new Bitmap(btPointer.Width, btPointer.Height);
-			g = Graphics.FromImage(image_pointer_act);
+			g.DrawImage(global::gInk.Properties.Resources.pointer, 0, 0, btTHwide.Width, btTHwide.Height);
+			image_thnarrow_act = new Bitmap(btTHwide.Width, btTHwide.Height);
+			g = Graphics.FromImage(image_thnarrow_act);
 			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btPointer.Width, btPointer.Height);
-			btPointer.Image = image_pointer_act;
+			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btTHwide.Width, btTHwide.Height);
+			btTHnarrow.Image = image_thnarrow_act;
+
+			image_thmiddle = new Bitmap(btTHwide.Width, btTHwide.Height);
+			g = Graphics.FromImage(image_thmiddle);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.pointer, 0, 0, btTHwide.Width, btTHwide.Height);
+			image_thmiddle_act = new Bitmap(btTHwide.Width, btTHwide.Height);
+			g = Graphics.FromImage(image_thmiddle_act);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btTHwide.Width, btTHwide.Height);
+			btTHmiddle.Image = image_thmiddle_act;
+
+			image_thwide = new Bitmap(btTHwide.Width, btTHwide.Height);
+			g = Graphics.FromImage(image_thwide);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.pointer, 0, 0, btTHwide.Width, btTHwide.Height);
+			image_thwide_act = new Bitmap(btTHwide.Width, btTHwide.Height);
+			g = Graphics.FromImage(image_thwide_act);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.pointer_act, 0, 0, btTHwide.Width, btTHwide.Height);
+			btTHwide.Image = image_thwide_act;
 
 			LastTickTime = DateTime.Parse("1987-01-01");
 			tiSlide.Enabled = true;
+
+			SelectThreshold(Root.CDThresholdIndex);
 
 			ToTransparent();
 			ToTopMost();
@@ -152,9 +175,42 @@ namespace gInk
 			}
 		}
 
-		public void btPointer_Click(object sender, EventArgs e)
+		public void btTH_Click(object sender, EventArgs e)
 		{
-			Console.WriteLine("Pointer Botton Being Clicked");
+			if (sender == btTHnarrow)
+				SelectThreshold(1);
+			else if (sender == btTHmiddle)
+				SelectThreshold(2);
+			else if (sender == btTHwide)
+				SelectThreshold(3);
+		}
+
+		public void SelectThreshold(int index)
+		{
+			Root.CDThresholdIndex = index;
+			if (index == 1)
+			{
+				Root.CDThreshold = 10;
+				btTHnarrow.Image = image_thnarrow_act;
+				btTHmiddle.Image = image_thmiddle;
+				btTHwide.Image = image_thwide;
+			}
+			else if (index == 2)
+			{
+				Root.CDThreshold = 30;
+				btTHnarrow.Image = image_thnarrow;
+				btTHmiddle.Image = image_thmiddle_act;
+				btTHwide.Image = image_thwide;
+			}
+			else if (index == 3)
+			{
+				Root.CDThreshold = 60;
+				btTHnarrow.Image = image_thnarrow;
+				btTHmiddle.Image = image_thmiddle;
+				btTHwide.Image = image_thwide_act;
+			}
+
+			Root.UponButtonsUpdate |= 0x2;
 		}
 
 		public void btStop_Click(object sender, EventArgs e)
