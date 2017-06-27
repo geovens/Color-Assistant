@@ -145,6 +145,8 @@
     <None Include="buttonback.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shift_act.png" />
+    <None Include="shift.png" />
     <None Include="thnarrow_act.png" />
     <None Include="thmiddle_act.png" />
     <None Include="thwide_act.png" />

@@ -18,6 +18,7 @@ namespace gInk
 		public Bitmap image_exit;
 		public Bitmap image_dock, image_dockback;
 		public Bitmap image_thnarrow, image_thnarrow_act, image_thmiddle, image_thmiddle_act, image_thwide, image_thwide_act;
+		public Bitmap image_shift, image_shift_act;
 
 		public int ButtonsEntering = 0;  // -1 = exiting
 		public int gpButtonsLeft, gpButtonsTop;
@@ -95,10 +96,28 @@ namespace gInk
 			g.DrawImage(global::gInk.Properties.Resources.thwide_act, 0, 0, btTHwide.Width, btTHwide.Height);
 			btTHwide.Image = image_thwide_act;
 
+			image_shift = new Bitmap(btShift.Width, btShift.Height);
+			g = Graphics.FromImage(image_shift);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.shift, 0, 0, btShift.Width, btShift.Height);
+			image_shift_act = new Bitmap(btShift.Width, btShift.Height);
+			g = Graphics.FromImage(image_shift_act);
+			g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+			g.DrawImage(global::gInk.Properties.Resources.shift_act, 0, 0, btShift.Width, btShift.Height);
+			btTHwide.Image = image_shift;
+
 			LastTickTime = DateTime.Parse("1987-01-01");
 			tiSlide.Enabled = true;
 
-			SelectThreshold(Root.CDThresholdIndex);
+			if (Root.Tool == "Pick")
+				SelectThreshold(Root.CDThresholdIndex);
+			else if (Root.Tool == "Shift")
+			{
+				btTHnarrow.Image = image_thnarrow;
+				btTHmiddle.Image = image_thmiddle;
+				btTHwide.Image = image_thwide;
+				btShift.Image = image_shift_act;
+			}
 
 			ToTransparent();
 			ToTopMost();
@@ -201,7 +220,7 @@ namespace gInk
 				btTHnarrow.Image = image_thnarrow_act;
 				btTHmiddle.Image = image_thmiddle;
 				btTHwide.Image = image_thwide;
-				btShift.Image = image_thnarrow;
+				btShift.Image = image_shift;
 			}
 			else if (index == 2)
 			{
@@ -209,7 +228,7 @@ namespace gInk
 				btTHnarrow.Image = image_thnarrow;
 				btTHmiddle.Image = image_thmiddle_act;
 				btTHwide.Image = image_thwide;
-				btShift.Image = image_thnarrow;
+				btShift.Image = image_shift;
 			}
 			else if (index == 3)
 			{
@@ -217,7 +236,7 @@ namespace gInk
 				btTHnarrow.Image = image_thnarrow;
 				btTHmiddle.Image = image_thmiddle;
 				btTHwide.Image = image_thwide_act;
-				btShift.Image = image_thnarrow;
+				btShift.Image = image_shift;
 			}
 
 			Root.UponButtonsUpdate |= 0x2;
@@ -238,7 +257,7 @@ namespace gInk
 			btTHnarrow.Image = image_thnarrow;
 			btTHmiddle.Image = image_thmiddle;
 			btTHwide.Image = image_thwide;
-			btShift.Image = image_thnarrow_act;
+			btShift.Image = image_shift_act;
 
 			Root.UponButtonsUpdate |= 0x2;
 		}
