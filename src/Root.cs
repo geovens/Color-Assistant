@@ -159,13 +159,23 @@ namespace gInk
 			UponButtonsUpdate |= 0x2;
 		}
 
-		public void Pick(int x, int y)
+		public void Shift_Start()
+		{
+			FormDisplay.ShiftHue_Start();
+		}
+
+		public void Shift_End()
+		{
+			FormDisplay.ShiftHue_End();
+		}
+
+		public void Pick_Start(int x, int y)
 		{
 			InPick = true;
 			FormDisplay.PickColor(x, y);
 		}
 
-		public void UnPick()
+		public void Pick_End()
 		{
 			InPick = false;
 			FormDisplay.ClearCanvus();

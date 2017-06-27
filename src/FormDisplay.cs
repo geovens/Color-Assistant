@@ -180,6 +180,7 @@ namespace gInk
 			c.b = screenbits[pbase];
 			c.g = screenbits[pbase + 1];
 			c.r = screenbits[pbase + 2];
+			c.a = screenbits[pbase + 3];
 			return c;
 		}
 		public void SC(int i, int j, byte v, byte a)
@@ -189,13 +190,81 @@ namespace gInk
 			screenbits[(Width * j + i) * 4 + 2] = v;
 			screenbits[(Width * j + i) * 4 + 3] = a;
 		}
+		public void SC(int i, int j, intcolor c)
+		{
+			int pbase = (Width * j + i) * 4;
+			screenbits[pbase] = (byte)c.b;
+			screenbits[pbase + 1] = (byte)c.g;
+			screenbits[pbase + 2] = (byte)c.r;
+			screenbits[pbase + 3] = (byte)c.a;
+		}
 
 		public struct intcolor
 		{
 			public int b;
 			public int g;
 			public int r;
+			public int a;
 		}
+
+		public void ShiftHue_Start()
+		{
+			float scalefactor = getScalingFactor();
+			bitbltwidth = (int)(this.Width * scalefactor);
+			bitbltheight = (int)(this.Height * scalefactor);
+
+			IntPtr screenDc = GetDC(IntPtr.Zero);
+			StretchBlt(memscreenDc, 0, 0, Width, Height, screenDc, 0, 0, bitbltwidth, bitbltheight, 0x00CC0020);
+			GetBitmapBits(hScreenBitmap, Width * Height * 4, screenbits);
+
+			for (int i = 0; i < Width; i++)
+			{
+				for (int j = 0; j < Height; j++)
+				{
+					intcolor c = GC(i, j);
+					intcolor r;
+					
+					r.b = (c.g - c.r + 255) / 2;
+					r.g = Math.Min(Math.Min(c.g, c.r) * 2 + c.b, 255);
+					r.r = Math.Min(Math.Min(c.g, c.r) * 2, 255);
+					r.a = 255;
+
+					double drg = Math.Min(Math.Abs(c.g - c.r) / 100.0, 1.0);
+					double drg_ = 1 - drg;
+					r.b = (int)(drg * r.b + drg_ * c.b);
+					r.g = (int)(drg * r.g + drg_ * c.g);
+					r.r = (int)(drg * r.r + drg_ * c.r);
+
+					SC(i, j, r);
+				}
+			}
+
+			ReleaseDC(IntPtr.Zero, screenDc);
+
+			SetBitmapBits(hScreenBitmap, Width * Height * 4, screenbits);
+			BitBlt(canvusDc, 0, 0, this.Width, this.Height, memscreenDc, 0, 0, 0x00CC0020);
+
+			DrawButtons(false);
+			UpdateFormDisplay(true);
+		}
+
+		public void ShiftHue_End()
+		{
+			for (int i = 0; i < Width; i++)
+			{
+				for (int j = 0; j < Height; j++)
+				{
+					SC(i, j, 0, 0);
+				}
+			}
+
+			SetBitmapBits(hScreenBitmap, Width * Height * 4, screenbits);
+			BitBlt(canvusDc, 0, 0, this.Width, this.Height, memscreenDc, 0, 0, 0x00CC0020);
+
+			DrawButtons(false);
+			UpdateFormDisplay(true);
+		}
+	
 		public void PickColor(int x, int y)
 		{
 			float scalefactor = getScalingFactor();

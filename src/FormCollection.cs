@@ -154,12 +154,14 @@ namespace gInk
 
 		private void FormCollection_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			Root.Pick(e.X, e.Y);
+			//Root.Pick_Start(e.X, e.Y);
+			Root.Shift_Start();
 		}
 
 		private void FormCollection_MouseUp(object sender, MouseEventArgs e)
 		{
-			Root.UnPick();
+			//Root.Pick_End();
+			Root.Shift_End();
 		}
 
 		public void btDock_Click(object sender, EventArgs e)
