@@ -154,14 +154,18 @@ namespace gInk
 
 		private void FormCollection_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			//Root.Pick_Start(e.X, e.Y);
-			Root.Shift_Start();
+			if (Root.Tool == "Pick")
+				Root.Pick_Start(e.X, e.Y);
+			else if (Root.Tool == "Shift")
+				Root.Shift_Start();
 		}
 
 		private void FormCollection_MouseUp(object sender, MouseEventArgs e)
 		{
-			//Root.Pick_End();
-			Root.Shift_End();
+			if (Root.Tool == "Pick")
+				Root.Pick_End();
+			else if (Root.Tool == "Shift")
+				Root.Shift_End();
 		}
 
 		public void btDock_Click(object sender, EventArgs e)
@@ -189,6 +193,7 @@ namespace gInk
 
 		public void SelectThreshold(int index)
 		{
+			Root.Tool = "Pick";
 			Root.CDThresholdIndex = index;
 			if (index == 1)
 			{
@@ -196,6 +201,7 @@ namespace gInk
 				btTHnarrow.Image = image_thnarrow_act;
 				btTHmiddle.Image = image_thmiddle;
 				btTHwide.Image = image_thwide;
+				btShift.Image = image_thnarrow;
 			}
 			else if (index == 2)
 			{
@@ -203,6 +209,7 @@ namespace gInk
 				btTHnarrow.Image = image_thnarrow;
 				btTHmiddle.Image = image_thmiddle_act;
 				btTHwide.Image = image_thwide;
+				btShift.Image = image_thnarrow;
 			}
 			else if (index == 3)
 			{
@@ -210,6 +217,7 @@ namespace gInk
 				btTHnarrow.Image = image_thnarrow;
 				btTHmiddle.Image = image_thmiddle;
 				btTHwide.Image = image_thwide_act;
+				btShift.Image = image_thnarrow;
 			}
 
 			Root.UponButtonsUpdate |= 0x2;
@@ -223,6 +231,18 @@ namespace gInk
 		DateTime LastTickTime;
 		short LastZStatus = 0;
 		short LastYStatus = 0;
+
+		private void btShift_Click(object sender, EventArgs e)
+		{
+			Root.Tool = "Shift";
+			btTHnarrow.Image = image_thnarrow;
+			btTHmiddle.Image = image_thmiddle;
+			btTHwide.Image = image_thwide;
+			btShift.Image = image_thnarrow_act;
+
+			Root.UponButtonsUpdate |= 0x2;
+		}
+
 		private void tiSlide_Tick(object sender, EventArgs e)
 		{
 			// ignore the first tick

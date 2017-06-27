@@ -50,6 +50,7 @@ namespace gInk
 		public int UponButtonsUpdate = 0;
         public bool UponBalloonSnap = false;
 
+		public string Tool = "Pick";
 		public int CDThresholdIndex = 3;
 		public float CDThreshold;
 
