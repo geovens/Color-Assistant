@@ -15,6 +15,10 @@ The color flasher tool:
 ![screenshot](https://raw.githubusercontent.com/geovens/Color-Assistant/master/demo.gif)  
 (figure from http://ec.europa.eu/eurostat, color modified to show concept)
 
+### Download
+
+https://github.com/geovens/Color-Assistant/releases
+
 ### How to use
 
 Run Color Assistant, and an icon will appear in the system tray.  
@@ -25,14 +29,8 @@ Choose color filter tool to enter color-filter mode. Click and hold left mouse b
 Click the exit button in the tool menu or press ESC to dispatch the tool menu.  
   
 There are 3 color flasher tools, each one corresponding to a different "color difference threshold" (wide, normal, narrow).  
-  
-Or you can try it out by yourself. I believe it's simple and straightforward.  
 
-#### Download
-
-https://github.com/geovens/Color-Assistant/releases
-
-#### Features
+### Features
 
 Works for anything on the screen (web browsers, PDF documents, Microsoft Word documents, whatever)  
 Should work fine for multiple displays (currently untested)
