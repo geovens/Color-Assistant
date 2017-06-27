@@ -180,7 +180,6 @@ namespace gInk
 			c.b = screenbits[pbase];
 			c.g = screenbits[pbase + 1];
 			c.r = screenbits[pbase + 2];
-			c.a = screenbits[pbase + 3];
 			return c;
 		}
 		public void SC(int i, int j, byte v, byte a)
@@ -196,7 +195,6 @@ namespace gInk
 			screenbits[pbase] = (byte)c.b;
 			screenbits[pbase + 1] = (byte)c.g;
 			screenbits[pbase + 2] = (byte)c.r;
-			screenbits[pbase + 3] = (byte)c.a;
 		}
 
 		public struct intcolor
@@ -204,7 +202,6 @@ namespace gInk
 			public int b;
 			public int g;
 			public int r;
-			public int a;
 		}
 
 		public void ShiftHue_Start()
@@ -223,19 +220,31 @@ namespace gInk
 				{
 					intcolor c = GC(i, j);
 					intcolor r;
-					
-					r.b = (c.g - c.r + 255) / 2;
-					r.g = Math.Min(Math.Min(c.g, c.r) * 2 + c.b, 255);
-					r.r = Math.Min(Math.Min(c.g, c.r) * 2, 255);
-					r.a = 255;
 
-					double drg = Math.Min(Math.Abs(c.g - c.r) / 100.0, 1.0);
-					double drg_ = 1 - drg;
-					r.b = (int)(drg * r.b + drg_ * c.b);
-					r.g = (int)(drg * r.g + drg_ * c.g);
-					r.r = (int)(drg * r.r + drg_ * c.r);
+					if (Math.Abs(c.g - c.r) >= 60)
+					{
+						r.b = (c.g - c.r + 255) / 2;
+						r.g = Math.Min(Math.Min(c.g, c.r) * 2 + c.b, 255);
+						r.r = Math.Min(Math.Min(c.g, c.r) * 2, 255);
+						SC(i, j, r);
+					}
+					else if (Math.Abs(c.g - c.r) >= 5)
+					{
+						r.b = (c.g - c.r + 255) / 2;
+						r.g = Math.Min(Math.Min(c.g, c.r) * 2 + c.b, 255);
+						r.r = Math.Min(Math.Min(c.g, c.r) * 2, 255);
 
-					SC(i, j, r);
+						double drg = Math.Abs(c.g - c.r) / 60.0;
+						double drg_ = 1 - drg;
+						r.b = (int)(drg * r.b + drg_ * c.b);
+						r.g = (int)(drg * r.g + drg_ * c.g);
+						r.r = (int)(drg * r.r + drg_ * c.r);
+
+						SC(i, j, r);
+					}
+					else
+					{
+					}
 				}
 			}
 
