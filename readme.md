@@ -19,7 +19,7 @@ The color flasher tool:
 
 Run Color Assistant, and an icon will appear in the system tray.  
 Click the icon (or use a hotkey, default Ctrl+Alt+C) to bring up a tool selection menu in the lower-right corner of the screen.  
-![tool menu](https://raw.githubusercontent.com/geovens/Color-Assistant/master/demo.gif)  
+![tool menu](https://raw.githubusercontent.com/geovens/Color-Assistant/master/demo_tool_menu.jpg)  
 Choose one of the color flasher tools (they look like color pickers) to enter color-flashing mode. Click and hold left mouse button on a color to flash it. Release mouse button to stop flashing.  
 Choose color filter tool to enter color-filter mode. Click and hold left mouse button to enable the filter. Release mouse button to disable the filter.   
 Click the exit button in the tool menu or press ESC to dispatch the tool menu.  
